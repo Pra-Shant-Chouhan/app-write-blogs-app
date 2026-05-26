@@ -10,7 +10,7 @@ export class AuthService {
             .setProject(conf.appwriteProjectId)
         this.account = new Account(this.client)
     }
-    async createAccount({ email, password, name }) {
+    async createAccount({ email, password, name }: { email: string; password: string; name: string }) {
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
@@ -26,7 +26,7 @@ export class AuthService {
         }
     }
 
-    async login({ email, password }) {
+    async login({ email, password }: { email: string; password: string }) {
         // try {
         const session = await this.account.createEmailPasswordSession(email, password)
         return session
