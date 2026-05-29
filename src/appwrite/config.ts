@@ -1,6 +1,15 @@
-import { Client, ID, Query, Storage } from "appwrite";
+import { Client, Databases, ID, Query, Storage } from "appwrite";
 import conf from "../conf/conf";
 
+// FIX: interface syntax should use {}
+interface Post {
+    title: string;
+    slug: string;
+    content: string;
+    featureImage: string;
+    isPublished: string;
+    authorId: string;
+}
 export class Service {
     client = new Client();
     databases;
@@ -13,7 +22,7 @@ export class Service {
         this.bucket = new Storage(this.client);
     }
     //  db field -title, content, authorId, publishedDate,isPublished,category,featureImage
-    async createPost({ title, slug, content, featureImage, isPublished, authorId }) {
+    async createPost({ title, slug, content, featureImage, isPublished, authorId }: Post) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
@@ -34,7 +43,7 @@ export class Service {
 
     }
 
-    async updatePost(slug, { title, content, isPublished, featureImage }) {
+    async updatePost(slug:string, { title, content, isPublished, featureImage }: Partial<Post>) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
@@ -53,7 +62,7 @@ export class Service {
 
     }
 
-    async deletePost(slug) {
+    async deletePost(slug:string) {
         try {
             return await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
@@ -65,7 +74,7 @@ export class Service {
         }
     }
 
-    async getPost(slug) {
+    async getPost(slug:string) {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
@@ -90,7 +99,7 @@ export class Service {
         }
     }
 
-    async uploadFile(file){
+    async uploadFile(file:File) {
         try {
             return await this.bucket.createFile(
                 conf.appwriteBucketId,
@@ -98,25 +107,25 @@ export class Service {
                 file
             )
         } catch (error) {
-            console.error (`Error on upload file => ${error}`)
+            console.error(`Error on upload file => ${error}`)
             return null
         }
     }
 
-    async deleteFile(fileId){
+    async deleteFile(fileId:string) {
         try {
-             this.bucket.deleteFile(
+            this.bucket.deleteFile(
                 conf.appwriteBucketId,
                 fileId
             )
             return true
         } catch (error) {
-            console.error (`Error on delete file => ${error}`)
+            console.error(`Error on delete file => ${error}`)
             return false
         }
     }
-    
-    getFilePreview (fileId){
+
+    getFilePreview(fileId:string) {
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
             fileId
