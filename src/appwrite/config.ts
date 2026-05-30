@@ -1,8 +1,9 @@
 import { Client, Databases, ID, Query, Storage } from "appwrite";
 import conf from "../conf/conf";
 
-// FIX: interface syntax should use {}
-interface Post {
+// FIX: Add export keyword to Post interface so it can be imported in BlogForm component
+// This ensures type consistency across the application
+export interface Post {
     title: string;
     slug: string;
     content: string;
@@ -22,11 +23,14 @@ export class Service {
         this.bucket = new Storage(this.client);
     }
     //  db field -title, content, authorId, publishedDate,isPublished,category,featureImage
-    async createPost({ title, slug, content, featureImage, isPublished, authorId }: Post) {
+    // FIX: Add documentId parameter to createPost for explicit document ID control
+    // This matches the ID.unique() generated ID from the component
+    async createPost({ title, slug, content, featureImage, isPublished, authorId }: Post, documentId: string) {
         try {
             return await this.databases.createDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteBlogsCollectionId,
+                documentId,
                 {
                     title,
                     slug,
@@ -43,14 +47,17 @@ export class Service {
 
     }
 
-    async updatePost(slug:string, { title, content, isPublished, featureImage }: Partial<Post>) {
+    // FIX: Renamed parameter from "slug" to "docId" since it's actually a document ID, not a slug
+    // This clarifies that updatePost uses document ID (from $id field), not the slug field
+    async updatePost(docId: string, { title, content, isPublished, featureImage, slug }: Partial<Post>) {
         try {
             return await this.databases.updateDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteBlogsCollectionId,
-                slug,
+                docId,
                 {
                     title,
+                    slug,
                     content,
                     featureImage,
                     isPublished
@@ -62,24 +69,27 @@ export class Service {
 
     }
 
-    async deletePost(slug:string) {
+    // FIX: Renamed parameter from "slug" to "docId" for consistency
+    // All database operations should use the document ID ($id), not the slug field
+    async deletePost(docId: string) {
         try {
             return await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteBlogsCollectionId,
-                slug
+                docId
             )
         } catch (error) {
             console.error(`error on delete Blog->${error}`)
         }
     }
 
-    async getPost(slug:string) {
+    // FIX: Renamed parameter from "slug" to "docId" for consistency
+    async getPost(docId: string) {
         try {
             return await this.databases.getDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteBlogsCollectionId,
-                slug
+                docId
             )
         } catch (error) {
             console.log("Get Post, error-", error)
@@ -92,7 +102,7 @@ export class Service {
                 conf.appwriteDatabaseId,
                 conf.appwriteBlogsCollectionId,
                 queries,
-                10,
+                "10",
             )
         } catch (error) {
             console.error("Error on get Published Blog", error)
