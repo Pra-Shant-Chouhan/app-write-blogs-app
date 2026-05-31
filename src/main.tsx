@@ -11,7 +11,7 @@ import AllPostsPage from './pages/AllPostsPage.tsx'
 import PostPage from './pages/PostPage.tsx'
 import AddPostPage from './pages/AddPostPage.tsx'
 import EditPostPage from './pages/EditPostPage.tsx'
-import { RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
