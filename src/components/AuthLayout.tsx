@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState, ReactNode } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 
-export default function Protected({ children, authentication = true }) {
+export default function AuthLayout({ children, authentication = true }: { children?: ReactNode; authentication?: boolean }) {
     const navigate = useNavigate();
     const [loader, setLoader] = useState(true);
-    const authStatus = useSelector(state => state.auth.status)
+    const authStatus = useSelector((state: any) => state.auth.status)
 
     useEffect(() => {
-        // true && 
         if (authentication && authStatus !== authentication) {
             navigate("/")
         } else if (!authentication && authStatus !== authentication) {
@@ -16,9 +15,9 @@ export default function Protected({ children, authentication = true }) {
         }
         setLoader(false)
     }, [authStatus, navigate, authentication])
+
+    if (loader) return <div>Loading...</div>
     return (
-        <div>AuthLayout</div>
+        <>{children}</>
     )
 }
-
-export default AuthLayout
