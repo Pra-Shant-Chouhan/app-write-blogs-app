@@ -35,6 +35,7 @@ function BlogForm({ post }: BlogFormProps) {
     const navigate = useNavigate()
     const userData = useSelector(state => state.auth.userData)
 
+    console.log("blog form userData", userData)
     // FIX: Correct watch syntax - it takes a callback function with values param
     // Watch title field and auto-generate slug whenever title changes
     // This ensures slug is always in sync with the title
@@ -55,6 +56,13 @@ function BlogForm({ post }: BlogFormProps) {
         // FIX: Correct cleanup syntax - watch returns unsubscribe function, call it directly
         return () => subscription();
     }, [watch, setValue])
+
+    // Set authorId when userData becomes available
+    useEffect(() => {
+        if (userData && userData.$id) {
+            setValue("authorId", userData.$id);
+        }
+    }, [userData, setValue])
 
     // FIX: Add explicit type annotation for form data matching Post interface
     // This ensures type safety when accessing form data properties
@@ -91,7 +99,7 @@ function BlogForm({ post }: BlogFormProps) {
                         content: data.content,
                         featureImage: fileId,
                         isPublished: data.isPublished,
-                        authorId: userData.$id
+                        authorId: data.authorId
                     }, ID.unique());
                     if (dbPost) {
                         navigate(`/blog/${dbPost.$id}`)
@@ -140,7 +148,7 @@ return (
             {/* FIX: Changed field name from "status" to "isPublished" to match Post interface */}
             {/* FIX: Register field properly with correct key name */}
             <Select
-                options={["active", "inactive"]}
+                options={[{ value: true, label: "Active" }, { value: false, label: "Inactive" }]}
                 label="Status"
                 className="mb-4"
                 {...register("isPublished", { required: true })}

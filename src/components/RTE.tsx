@@ -13,6 +13,7 @@ function RTE({ name="", control, label = "text-area", defaultValue = "" }) {
                 render={({ field: { onChange } }) => (
                     <Editor
                         initialValue={defaultValue}
+                        apiKey={import.meta.env.VITE_TINY_API_KEY}
                         init={{
                             initialValue: defaultValue,
                             height: 500,
