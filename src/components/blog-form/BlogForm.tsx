@@ -33,7 +33,7 @@ function BlogForm({ post }: BlogFormProps) {
     })
 
     const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData)
+    const userData = useSelector(state => state.auth.userData)
 
     // FIX: Correct watch syntax - it takes a callback function with values param
     // Watch title field and auto-generate slug whenever title changes

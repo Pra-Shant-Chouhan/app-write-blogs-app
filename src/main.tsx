@@ -42,27 +42,26 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "/add-post", element: (
-          <AuthLayout authentication={true}>
+        path: "/add-post",
+        element: (
+          <AuthLayout authentication>
             {" "}
             <AddPostPage />
           </AuthLayout>
-        )
+        ),
       },
       {
-        path: "/edit-post/:slug", element: (
-          <AuthLayout authentication={true}>
+        path: "/edit-post/:slug",
+        element: (
+          <AuthLayout authentication>
+            {" "}
             <EditPostPage />
           </AuthLayout>
-        )
+        ),
       },
-
       {
-        path: "/post/:slug", element: (
-          <AuthLayout authentication>
-            <PostPage />
-          </AuthLayout>
-        )
+        path: "/post/:slug",
+        element: <PostPage />,
       },
     ]
   },
