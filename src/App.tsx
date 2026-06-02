@@ -6,6 +6,7 @@ import authService from './appwrite/auth';
 import { login, logout } from './features/authSlice';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -36,8 +37,8 @@ function App() {
         <div className="w-full">
           <Header />
           <main>
-            {/* <Outlet/>    */}
-            <h1>Hello World!</h1>
+            <Outlet/>   
+            {/* <h1>Hello World!</h1> */}
           </main>
           <Footer />
         </div>

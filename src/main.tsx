@@ -18,6 +18,7 @@ const router = createBrowserRouter([
     path: "/", element: <App />,
     children: [
       {path: "/", element: <HomePage />},
+      // {path: "/login", element: <LoginPage />},
       {path: "/login", element: (
         <AuthLayout authentication={false}>
           <LoginPage />
@@ -29,12 +30,14 @@ const router = createBrowserRouter([
         </AuthLayout>
       )},
       {path: "/all-posts", element: (
-        <AuthLayout authentication={true}>
+        <AuthLayout authentication>
+           {" "}
           <AllPostsPage />
         </AuthLayout>
       )},
       {path: "/add-post", element: (
         <AuthLayout authentication={true}>
+           {" "}
           <AddPostPage />
         </AuthLayout>
       )},
