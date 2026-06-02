@@ -7,19 +7,28 @@ import { login as loginAction } from '../features/authSlice';
 import Logo from './ui/Logo';
 import Input from './ui/Input';
 import Button from './ui/Button';
+interface LoginFormInputs {
+    email: string;
+    password: string;
+}
+
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
+        mode: 'onSubmit'
+    });
 
     const [error, setError] = React.useState("");
 
-    const login = async (data) => {
+    const login = async (data: LoginFormInputs) => {
+        console.log("in login component data", data)
         setError("")
         try {
             const session = await authService.login(data);
             if (session) {
                 const userData = await authService.getCurrentUser();
+                console.log("in login component userData", userData)
                 if (userData) dispatch(loginAction(userData));
                 navigate('/');
             }
@@ -58,9 +67,9 @@ const Login = () => {
                         placeholder="Enter Your email"
                         type="email"
                         {...register("email", {
-                            required: true,
+                            required: "Email is required",
                             validate: {
-                                matchPattern: (value) => /^ [a - zA - Z0 -9._ % +-] + @[a - zA - Z0 - 9. -] +\.[a-zA-Z]{2,}$/.test(value) ||
+                                matchPattern: (value) => /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value) ||
                                     "Email must be valid input",
 
                             }
@@ -68,21 +77,24 @@ const Login = () => {
                         }
 
                     />
+                    {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
                     <Input
                         label='Password: '
                         type="password"
                         placeholder='Enter your password'
                         {...register("password",
                             {
-                                required: true,
-                                // validate:{
-
-                                // }
+                                required: "Password is required",
 
                             }
                         )}
                     />
-                    <Button >Sing in</Button>
+                    {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>}
+                    <Button
+                        type="submit"
+                        className="w-full cursor-pointer bg-primary hover:bg-primary/90 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Sing in</Button>
                 </form>
             </div>
         </div>

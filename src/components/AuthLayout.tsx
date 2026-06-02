@@ -8,7 +8,7 @@ export default function AuthLayout({ children, authentication = true }: { childr
     const authStatus = useSelector((state: any) => state.auth.status)
 
     useEffect(() => {
-        console.log("auth layout",authStatus, authentication)
+        console.log(`IN auth layout=>,authStatus->${authStatus}, authentication->${authentication}`)
         if (authentication && authStatus !== authentication) {
             navigate("/login")
         } else if (!authentication && authStatus !== authentication) {

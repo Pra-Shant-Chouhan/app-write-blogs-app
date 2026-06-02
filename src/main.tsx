@@ -17,41 +17,53 @@ const router = createBrowserRouter([
   {
     path: "/", element: <App />,
     children: [
-      {path: "/", element: <HomePage />},
+      { path: "/", element: <HomePage /> },
       // {path: "/login", element: <LoginPage />},
-      {path: "/login", element: (
-        <AuthLayout authentication={false}>
-          <LoginPage />
-        </AuthLayout>
-      )},
-      {path: "/signup", element: (
-        <AuthLayout authentication={false}>
-          <SignupPage />
-        </AuthLayout>
-      )},
-      {path: "/all-posts", element: (
-        <AuthLayout authentication>
-           {" "}
-          <AllPostsPage />
-        </AuthLayout>
-      )},
-      {path: "/add-post", element: (
-        <AuthLayout authentication={true}>
-           {" "}
-          <AddPostPage />
-        </AuthLayout>
-      )},
-      {path: "/edit-post/:slug", element: (
-        <AuthLayout authentication={true}>
-          <EditPostPage />
-        </AuthLayout>
-      )},
+      {
+        path: "/login", element: (
+          <AuthLayout authentication={false}>
+            <LoginPage />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/signup", element: (
+          <AuthLayout authentication={false}>
+            <SignupPage />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/all-posts", element: (
+          <AuthLayout authentication>
+            {" "}
+            <AllPostsPage />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/add-post", element: (
+          <AuthLayout authentication={true}>
+            {" "}
+            <AddPostPage />
+          </AuthLayout>
+        )
+      },
+      {
+        path: "/edit-post/:slug", element: (
+          <AuthLayout authentication={true}>
+            <EditPostPage />
+          </AuthLayout>
+        )
+      },
 
-      {path: "/post/:slug", element: (
-        <AuthLayout authentication>
-          <PostPage />
-        </AuthLayout>
-      )},
+      {
+        path: "/post/:slug", element: (
+          <AuthLayout authentication>
+            <PostPage />
+          </AuthLayout>
+        )
+      },
     ]
   },
 ])
@@ -59,7 +71,6 @@ createRoot(document.getElementById('root')!).render(
   // <StrictMode>
   <Provider store={store}>
     <RouterProvider router={router} />
-
   </Provider>
   // </StrictMode>,
 )
