@@ -26,9 +26,11 @@ const Login = () => {
         setError("")
         try {
             const session = await authService.login(data);
+            // console.log("session",session)
+            // console.log("truthy or falsy session",Boolean(session))
             if (session) {
                 const userData = await authService.getCurrentUser();
-                console.log("in login component userData", userData)
+                // console.log("in login component userData", userData)
                 if (userData) dispatch(loginAction(userData));
                 navigate('/');
             }

@@ -14,33 +14,30 @@ export class AuthService {
         try {
             const userAccount = await this.account.create(ID.unique(), email, password, name);
             if (userAccount) {
-                // return (userAccount);
-                // ** login on register
+                // login on register
                 return this.login({ email, password })
             }
-            if (!userAccount) {
-                return null
-            }
+            return null
         } catch (err) {
-            return err
+            throw err
         }
     }
 
     async login({ email, password }: { email: string; password: string }) {
-        // try {
-        const session = await this.account.createEmailPasswordSession(email, password)
-        return session
-        // } catch (err) {
-        //     throw err
-        // }
+        try {
+            const session = await this.account.createEmailPasswordSession(email, password)
+            return session
+        } catch (err) {
+            throw err
+        }
     }
     async getCurrentUser() {
         try {
-            await this.account.get();
+            return await this.account.get();
         } catch (error) {
             console.log(`Error on get current user ${error}`)
+            return null
         }
-        return null
     }
     async logout() {
         try {
